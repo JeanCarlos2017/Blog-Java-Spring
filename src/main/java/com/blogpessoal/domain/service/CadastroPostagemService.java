@@ -23,5 +23,10 @@ public class CadastroPostagemService {
 	public void excluir(@Valid Long id) {
 		postagemRepository.deleteById(id);		
 	}
+
+	public PostagemRepository getPostagemRepository() {
+		return postagemRepository;
+	}
+	
 	
 }

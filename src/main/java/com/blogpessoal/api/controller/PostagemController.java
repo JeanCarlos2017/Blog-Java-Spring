@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blogpessoal.domain.model.Postagem;
-import com.blogpessoal.domain.repository.PostagemRepository;
 import com.blogpessoal.domain.service.CadastroPostagemService;
 
 
@@ -30,20 +29,18 @@ import com.blogpessoal.domain.service.CadastroPostagemService;
 @CrossOrigin("*")
 public class PostagemController {
 	
-	@Autowired
-	private PostagemRepository postagemRepository;
 	
 	@Autowired
 	private CadastroPostagemService cadastroPostagem;
 	
 	@GetMapping("")
 	public ResponseEntity<List<Postagem>> findAll() {
-		return ResponseEntity.ok(postagemRepository.findAll());
+		return ResponseEntity.ok(cadastroPostagem.getPostagemRepository().findAll());
 	}
 	
 	@GetMapping("/{postId}")
 	public ResponseEntity<Postagem> findById(@PathVariable Long postId) {
-		Optional<Postagem> post = postagemRepository.findById(postId);
+		Optional<Postagem> post = cadastroPostagem.getPostagemRepository().findById(postId);
 		if (post.isPresent()) {
 			return ResponseEntity.ok(post.get());
 		}else {
@@ -53,7 +50,7 @@ public class PostagemController {
 	
 	@GetMapping("/titulo/{titulo}")
 	public ResponseEntity<List<Postagem>> findAllByTituloContaining(@PathVariable String titulo) {
-		return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
+		return ResponseEntity.ok(cadastroPostagem.getPostagemRepository().findAllByTituloContainingIgnoreCase(titulo));
 	}
 	
 	@PostMapping
@@ -64,7 +61,7 @@ public class PostagemController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Postagem> alteraPostagem(@Valid @PathVariable Long id, @RequestBody Postagem post) {
-		if(postagemRepository.existsById(id)) {
+		if(cadastroPostagem.getPostagemRepository().existsById(id)) {
 			//id passado é válido
 			post.setId(id); //passo o valor para o post 
 			cadastroPostagem.salvar(post);
@@ -77,7 +74,7 @@ public class PostagemController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePostagem(@Valid @PathVariable Long id) {
-		if(postagemRepository.existsById(id)) {
+		if(cadastroPostagem.getPostagemRepository().existsById(id)) {
 			//id passado é válido
 			cadastroPostagem.excluir(id);
 			return ResponseEntity.noContent().build();
