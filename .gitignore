@@ -195,5 +195,6 @@ $RECYCLE.BIN/
 *.lnk
 
 Ideias do Projeto.txt
+ánotações.txt
 
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows

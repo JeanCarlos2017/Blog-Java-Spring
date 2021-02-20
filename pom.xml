@@ -53,11 +53,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<!-- https://mvnrepository.com/artifact/io.rest-assured/spring-mock-mvc -->
 		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
+		    <groupId>io.rest-assured</groupId>
+		    <artifactId>spring-mock-mvc</artifactId>
 		    <scope>test</scope>
 		</dependency>
 		
