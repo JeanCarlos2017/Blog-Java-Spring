@@ -31,7 +31,7 @@ class PostagemRepositoryTest {
 	}
 	
 	@Test
-	void cadastraUsuario_Sucesso() {
+	void cadastraPostagem_Sucesso() {
 		//criando uma postagem 
 		Postagem post= new Postagem();
 		post.setTitulo("Uma postagem usada para fazer testes");
@@ -46,7 +46,7 @@ class PostagemRepositoryTest {
 	}
 	
 	@Test
-	void cadastraUsuario_TituloNulo() {
+	void cadastraPostagem_TituloNulo() {
 		// criando uma postagem sem titulo
 		Postagem post = new Postagem();
 		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
@@ -58,7 +58,7 @@ class PostagemRepositoryTest {
 		assertTrue(exception.getMessage().contains("não deve ser nulo"));
 	}
 	@Test
-	void cadastraUsuario_TextoNulo() {
+	void cadastraPostagem_TextoNulo() {
 		// criando uma postagem sem titulo
 		Postagem post = new Postagem();
 		post.setTitulo("Uma postagem usada para fazer testes");
@@ -68,5 +68,27 @@ class PostagemRepositoryTest {
 				()-> postagemRepository.save(post)
 		);
 		assertTrue(exception.getMessage().contains("não deve ser nulo"));
+	}
+	
+	@Test
+	void alteraPostagem_Sucesso() {
+		// criando uma postagem
+		Postagem post = new Postagem();
+		post.setTitulo("Uma postagem usada para fazer testes");
+		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
+		// salvo a postagem
+		Postagem postSaved = postagemRepository.save(post);
+		//alteranto o poste
+		postSaved.setTitulo("Titulo alterado");
+		postSaved.setTexto("texto alterado");
+		//salvo a alteração 
+		Postagem postUpdate= postagemRepository.save(postSaved);
+		//faço os testes 
+		Assertions.assertThat(postUpdate).isNotNull();
+		Assertions.assertThat(postUpdate.getId()).isNotNull();
+		Assertions.assertThat(postUpdate.getId()).isEqualTo(postSaved.getId());
+		Assertions.assertThat(postUpdate.getTexto()).isEqualTo(postSaved.getTexto());
+		Assertions.assertThat(postUpdate.getTitulo()).isEqualTo(postSaved.getTitulo());
+
 	}
 }
