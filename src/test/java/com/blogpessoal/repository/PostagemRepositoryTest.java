@@ -1,6 +1,10 @@
 package com.blogpessoal.repository;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import javax.validation.ConstraintViolationException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -40,5 +44,29 @@ class PostagemRepositoryTest {
 		Assertions.assertThat(testeSave.getTexto()).isEqualTo(post.getTexto());
 		
 	}
-
+	
+	@Test
+	void cadastraUsuario_TituloNulo() {
+		// criando uma postagem sem titulo
+		Postagem post = new Postagem();
+		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
+		//experando a exception 
+		Exception exception= assertThrows(
+				ConstraintViolationException.class, 
+				()-> postagemRepository.save(post)
+		);
+		assertTrue(exception.getMessage().contains("não deve ser nulo"));
+	}
+	@Test
+	void cadastraUsuario_TextoNulo() {
+		// criando uma postagem sem titulo
+		Postagem post = new Postagem();
+		post.setTitulo("Uma postagem usada para fazer testes");
+		//experando a exception 
+		Exception exception= assertThrows(
+				ConstraintViolationException.class, 
+				()-> postagemRepository.save(post)
+		);
+		assertTrue(exception.getMessage().contains("não deve ser nulo"));
+	}
 }
