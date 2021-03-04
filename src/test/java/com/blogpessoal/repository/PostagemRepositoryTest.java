@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Optional;
+
 import javax.validation.ConstraintViolationException;
 
 import org.assertj.core.api.Assertions;
@@ -96,7 +98,15 @@ class PostagemRepositoryTest {
 	}
 	
 	@Test
-	void deletePostagem_Sucesso() {
-		
+	void deletePostagemPorId_Sucesso() {
+		// criando uma postagem
+		Postagem post = this.criaPostagem();
+		// salvo a postagem
+		Postagem postSaved = postagemRepository.save(post);
+		//deleto por id 
+		postagemRepository.deleteById(postSaved.getId());
+		//verifico se deletou mesmo 
+		Optional<Postagem> buscaPost= postagemRepository.findById(postSaved.getId());
+		Assertions.assertThat(buscaPost.isEmpty()).isTrue();
 	}
 }
