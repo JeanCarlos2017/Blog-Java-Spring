@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.blogpessoal.domain.model.Postagem;
@@ -68,6 +69,7 @@ class PostagemRepositoryTest {
 		);
 		assertTrue(exception.getMessage().contains("não deve ser nulo"));
 	}
+	
 	@Test
 	void cadastraPostagem_TextoNulo() {
 		// criando uma postagem sem titulo
@@ -108,5 +110,15 @@ class PostagemRepositoryTest {
 		//verifico se deletou mesmo 
 		Optional<Postagem> buscaPost= postagemRepository.findById(postSaved.getId());
 		Assertions.assertThat(buscaPost.isEmpty()).isTrue();
+	}
+	
+	@Test
+	void deletePostagem_IdNaoExistente() {
+		//deleto com um id que nao existe 
+		Exception exception= assertThrows(
+				EmptyResultDataAccessException.class, 
+				()-> postagemRepository.deleteById(251L)
+		);
+		assertTrue(exception.getMessage().contains("id 251 exists!"));
 	}
 }
