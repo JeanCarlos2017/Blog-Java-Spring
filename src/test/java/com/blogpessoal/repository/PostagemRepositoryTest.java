@@ -24,6 +24,20 @@ class PostagemRepositoryTest {
 	
 	@Autowired PostagemRepository postagemRepository;
 	
+	public Postagem criaPostagem() {
+		Postagem post= new Postagem();
+		post.setTitulo("Uma postagem usada para fazer testes");
+		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
+		return post;
+	}
+	
+	public void testePostagem(Postagem post1, Postagem post2) {
+		Assertions.assertThat(post1).isNotNull();
+		Assertions.assertThat(post1.getId()).isNotNull();
+		Assertions.assertThat(post1.getTexto()).isEqualTo(post2.getTexto());
+		Assertions.assertThat(post1.getTitulo()).isEqualTo(post2.getTitulo());
+
+	}
 	@Test
 	void testBasico() {
 		boolean test = true;
@@ -33,16 +47,11 @@ class PostagemRepositoryTest {
 	@Test
 	void cadastraPostagem_Sucesso() {
 		//criando uma postagem 
-		Postagem post= new Postagem();
-		post.setTitulo("Uma postagem usada para fazer testes");
-		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
+		Postagem post= this.criaPostagem();
 		//salvo a postagem
 		Postagem testeSave= postagemRepository.save(post);
 		//faço os testes
-		Assertions.assertThat(testeSave).isNotNull();
-		Assertions.assertThat(testeSave.getId()).isNotNull();
-		Assertions.assertThat(testeSave.getTexto()).isEqualTo(post.getTexto());
-		
+		this.testePostagem(testeSave, post);
 	}
 	
 	@Test
@@ -73,9 +82,7 @@ class PostagemRepositoryTest {
 	@Test
 	void alteraPostagem_Sucesso() {
 		// criando uma postagem
-		Postagem post = new Postagem();
-		post.setTitulo("Uma postagem usada para fazer testes");
-		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
+		Postagem post = this.criaPostagem();
 		// salvo a postagem
 		Postagem postSaved = postagemRepository.save(post);
 		//alteranto o poste
@@ -84,11 +91,12 @@ class PostagemRepositoryTest {
 		//salvo a alteração 
 		Postagem postUpdate= postagemRepository.save(postSaved);
 		//faço os testes 
-		Assertions.assertThat(postUpdate).isNotNull();
-		Assertions.assertThat(postUpdate.getId()).isNotNull();
 		Assertions.assertThat(postUpdate.getId()).isEqualTo(postSaved.getId());
-		Assertions.assertThat(postUpdate.getTexto()).isEqualTo(postSaved.getTexto());
-		Assertions.assertThat(postUpdate.getTitulo()).isEqualTo(postSaved.getTitulo());
-
+		this.testePostagem(postUpdate, postSaved);
+	}
+	
+	@Test
+	void deletePostagem_Sucesso() {
+		
 	}
 }
