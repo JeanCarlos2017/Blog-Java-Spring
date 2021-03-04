@@ -1,5 +1,6 @@
-# PrimeiroCRUDGeneration
-No momento o sistema é uma API RESTful que permite criar uma postagem – informando o titulo e texto, e o sistema se encarrega de armazenar a data  e hora em que foi feita a publicação – e listar as postagens cadastradas
+# BlogGeneration
+No momento o sistema é uma API RESTful que permite criar uma postagem – informando o titulo e texto, e o sistema se encarrega de armazenar a data  e hora em que foi feita a publicação – e listar as postagens cadastradas.
+Agora as postagens tem um tema, enquanto um tema pode ter diversas postagens 
 
 ## Como executar o projeto? 
 Caso não saiba como executar uma aplicação Spring Boot com Maven ou um executável Jar clique [aqui](https://www.codeflow.site/pt/article/spring-boot-run-maven-vs-executable-jar)
