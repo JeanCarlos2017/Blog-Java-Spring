@@ -24,7 +24,8 @@ public class Postagem {
 	private long id;
 	
 	//@Getter @Setter 
-	@NotNull @Size(min= 5, max= 100)
+	@NotNull (message = "tem que existir um título")
+	@Size(min= 5, max= 100)
 	private String titulo;
 	
 	//@Getter @Setter
