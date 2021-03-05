@@ -19,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.blogpessoal.domain.model.Postagem;
 import com.blogpessoal.domain.repository.PostagemRepository;
+import com.blogpessoal.util.PostagemCreator;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -27,12 +28,6 @@ class PostagemRepositoryTest {
 	
 	@Autowired PostagemRepository postagemRepository;
 	
-	public Postagem criaPostagem() {
-		Postagem post= new Postagem();
-		post.setTitulo("Uma postagem usada para fazer testes");
-		post.setTexto("quero um caso de sucesso, então o texto tem mais de 10 caracteres");
-		return post;
-	}
 	
 	public void testePostagem(Postagem post1, Postagem post2) {
 		Assertions.assertThat(post1).isNotNull();
@@ -50,7 +45,7 @@ class PostagemRepositoryTest {
 	@Test
 	void cadastraPostagem_Sucesso() {
 		//criando uma postagem 
-		Postagem post= this.criaPostagem();
+		Postagem post= PostagemCreator.criaPostagem();
 		//salvo a postagem
 		Postagem testeSave= postagemRepository.save(post);
 		//faço os testes
@@ -67,7 +62,7 @@ class PostagemRepositoryTest {
 				ConstraintViolationException.class, 
 				()-> postagemRepository.save(post)
 		);
-		assertTrue(exception.getMessage().contains("não deve ser nulo"));
+		assertTrue(exception.getMessage().contains("tem que existir um título"));
 	}
 	
 	@Test
@@ -86,7 +81,7 @@ class PostagemRepositoryTest {
 	@Test
 	void alteraPostagem_Sucesso() {
 		// criando uma postagem
-		Postagem post = this.criaPostagem();
+		Postagem post = PostagemCreator.criaPostagem();
 		// salvo a postagem
 		Postagem postSaved = postagemRepository.save(post);
 		//alteranto o poste
@@ -102,7 +97,7 @@ class PostagemRepositoryTest {
 	@Test
 	void deletePostagemPorId_Sucesso() {
 		// criando uma postagem
-		Postagem post = this.criaPostagem();
+		Postagem post = PostagemCreator.criaPostagem();
 		// salvo a postagem
 		Postagem postSaved = postagemRepository.save(post);
 		//deleto por id 
@@ -121,4 +116,5 @@ class PostagemRepositoryTest {
 		);
 		assertTrue(exception.getMessage().contains("id 251 exists!"));
 	}
+	
 }
