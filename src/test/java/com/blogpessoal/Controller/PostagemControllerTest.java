@@ -3,6 +3,7 @@ package com.blogpessoal.Controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ public class PostagemControllerTest {
 	
 	@Test
 	@DisplayName("Retorna lista de postagens dentro po postList")
-	void testFindAll_Sucessful() {
+	void testFindAll_Successful() {
 		//criando uma lista de postagem com um elemento
 		List<Postagem> postList= List.of(PostagemCreator.criaPostagem());
 		
@@ -56,7 +57,7 @@ public class PostagemControllerTest {
 	
 	@Test
 	@DisplayName("busca por id Sucesso")
-	void findById_Sucessful() {
+	void findById_Successful() {
 		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
 				.thenReturn(Optional.of(PostagemCreator.criaPostagem_Save()));
 		
@@ -90,12 +91,38 @@ public class PostagemControllerTest {
 	
 	@Test 
 	@DisplayName("Save Post")
-	void savePost_Sucess() {
+	void savePost_Success() {
 		BDDMockito.when(postService.salvar(ArgumentMatchers.any()))
 									.thenReturn(PostagemCreator.criaPostagem_Save());
 		//fazendo a requisição no controller 
 		ResponseEntity<Postagem> postSave= postagemController.adicionarPostagem(PostagemCreator.criaPostagem());
 		//realizando os testes 
 		ResponseEntityPostagemTest.testePostagemUnica(postSave, HttpStatus.CREATED);
+	}
+	
+	@Test 
+	@DisplayName("Delete Post IdExistente")
+	void deletePost_Success() {
+		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(true);
+		BDDMockito.doNothing().when(postService).excluir(ArgumentMatchers.any());
+								
+		//fazendo a requisição no controller 
+		ResponseEntity<Void> postDelete= postagemController
+								.deletePostagem(PostagemCreator.criaPostagem_Save().getId());
+		//realizando os testes 
+		Assertions.assertThat(postDelete.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+	}
+	
+	@Test 
+	@DisplayName("Delete Post Id Inexistente")
+	void deletePost_failure() {
+		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(false);
+		BDDMockito.doNothing().when(postService).excluir(ArgumentMatchers.any());
+								
+		//fazendo a requisição no controller 
+		ResponseEntity<Void> postDelete= postagemController
+								.deletePostagem(PostagemCreator.criaPostagem_Save().getId());
+		//realizando os testes 
+		Assertions.assertThat(postDelete.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 }
