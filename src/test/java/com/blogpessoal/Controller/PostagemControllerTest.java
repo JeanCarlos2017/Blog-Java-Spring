@@ -12,6 +12,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.blogpessoal.api.controller.PostagemController;
@@ -21,6 +23,7 @@ import com.blogpessoal.domain.service.CadastroPostagemService;
 import com.blogpessoal.util.PostagemCreator;
 
 @ExtendWith(SpringExtension.class)
+@DisplayName("[Teste]Postagem Controller")
 public class PostagemControllerTest {
 	@InjectMocks //quero testar a classe em si
 	private PostagemController postagemController;
@@ -61,13 +64,14 @@ public class PostagemControllerTest {
 	@Test
 	@DisplayName("busca por id Sucesso")
 	void findById_Sucessful() {
-		//quando chamar o medodo findAll vai retornar o postagemPage
+		// quando chamar o medodo findAll vai retornar o postagemPage
 		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
-										.thenReturn(Optional.of(PostagemCreator.criaPostagem_Save()));
-		Optional<Postagem> postFindById= postService.getPostagemRepository().findById(321L);
-		Assertions.assertThat(postFindById).isPresent();
-		Assertions.assertThat(postFindById.get().getTitulo())
-					.isEqualTo(PostagemCreator.criaPostagem_Save().getTitulo());
+				.thenReturn(Optional.of(PostagemCreator.criaPostagem_Save()));
+		ResponseEntity<Postagem> postFindById = postagemController.findById(321L);
+		// teste no response entity
+		Assertions.assertThat(postFindById.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
+		Assertions.assertThat(postFindById.getBody()).isNotNull();
+		Assertions.assertThat(postFindById.getBody().getTexto()).isEqualTo(postFindById.getBody().getTexto());
 	}
 	
 	@Test
