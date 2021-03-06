@@ -125,4 +125,28 @@ public class PostagemControllerTest {
 		//realizando os testes 
 		Assertions.assertThat(postDelete.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
+	
+	@Test
+	@DisplayName("Update Post Id Existente")
+	void putPost_Success() {
+		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(true);
+		BDDMockito.when(postService.salvar(ArgumentMatchers.any())).thenReturn(PostagemCreator.criaPostagem_Update());
+
+		// fazendo a requisição no controller
+		ResponseEntity<Postagem> postUpdate = postagemController
+				.alteraPostagem(PostagemCreator.criaPostagem_Save().getId(), PostagemCreator.criaPostagem_Update());
+		ResponseEntityPostagemTest.testePostagemUnica(postUpdate, HttpStatus.OK);
+	}
+	
+	@Test
+	@DisplayName("Update Post Id Inexistente")
+	void putPost_Failure() {
+		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(false);
+		BDDMockito.when(postService.salvar(ArgumentMatchers.any())).thenReturn(PostagemCreator.criaPostagem_Update());
+
+		// fazendo a requisição no controller
+		ResponseEntity<Postagem> postUpdate = postagemController.alteraPostagem(2567L,
+				PostagemCreator.criaPostagem_Update());
+		ResponseEntityPostagemTest.testePostagemUnicaVazia(postUpdate, HttpStatus.NOT_FOUND);
+	}
 }
