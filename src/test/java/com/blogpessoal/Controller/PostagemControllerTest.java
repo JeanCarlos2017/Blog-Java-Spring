@@ -98,10 +98,12 @@ public class PostagemControllerTest {
 	void findByIdInexistente() {
 		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
 		.thenReturn(Optional.empty());
-		Optional<Postagem> postFindById= postService.getPostagemRepository().findById(321L);
-		Assertions.assertThat(postFindById).
-					isEmpty()
-					.isNotNull();
+		//fazendo a requisição no controller 
+		ResponseEntity<Postagem> postFindById= postagemController.findById(3021L);
+		// realizando os testes
+		Assertions.assertThat(postFindById.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		Assertions.assertThat(postFindById.getBody()).isNull();
+		
 	}
 	
 }
