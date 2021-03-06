@@ -21,6 +21,7 @@ import com.blogpessoal.domain.model.Postagem;
 import com.blogpessoal.domain.repository.PostagemRepository;
 import com.blogpessoal.domain.service.CadastroPostagemService;
 import com.blogpessoal.util.PostagemCreator;
+import com.blogpessoal.util.ResponseEntityPostagemTest;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("[Teste]Postagem Controller")
@@ -69,9 +70,7 @@ public class PostagemControllerTest {
 				.thenReturn(Optional.of(PostagemCreator.criaPostagem_Save()));
 		ResponseEntity<Postagem> postFindById = postagemController.findById(321L);
 		// teste no response entity
-		Assertions.assertThat(postFindById.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
-		Assertions.assertThat(postFindById.getBody()).isNotNull();
-		Assertions.assertThat(postFindById.getBody().getTexto()).isEqualTo(postFindById.getBody().getTexto());
+		ResponseEntityPostagemTest.testePostagemUnica(postFindById, HttpStatus.OK);
 	}
 	
 	@Test
@@ -101,9 +100,17 @@ public class PostagemControllerTest {
 		//fazendo a requisição no controller 
 		ResponseEntity<Postagem> postFindById= postagemController.findById(3021L);
 		// realizando os testes
-		Assertions.assertThat(postFindById.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		Assertions.assertThat(postFindById.getBody()).isNull();
-		
+		ResponseEntityPostagemTest.testePostagemUnicaVazia(postFindById, HttpStatus.NOT_FOUND);
 	}
 	
+	@Test 
+	@DisplayName("Save Post")
+	void savePost_Sucess() {
+		BDDMockito.when(postService.salvar(ArgumentMatchers.any()))
+									.thenReturn(PostagemCreator.criaPostagem_Save());
+		//fazendo a requisição no controller 
+		ResponseEntity<Postagem> postSave= postagemController.adicionarPostagem(PostagemCreator.criaPostagem());
+		//realizando os testes 
+		ResponseEntityPostagemTest.testePostagemUnica(postSave, HttpStatus.CREATED);
+	}
 }
