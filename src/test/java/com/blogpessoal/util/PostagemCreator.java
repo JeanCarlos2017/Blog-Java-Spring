@@ -10,7 +10,7 @@ public class PostagemCreator {
 		return post;
 	}
 	
-	public Postagem criaPostagem_Save() {
+	public static Postagem criaPostagem_Save() {
 		Postagem post= new Postagem();
 		post.setId(1L);
 		post.setTitulo("Uma postagem usada para fazer testes");
@@ -18,7 +18,7 @@ public class PostagemCreator {
 		return post;
 	}
 	
-	public Postagem criaPostagem_Update() {
+	public static Postagem criaPostagem_Update() {
 		Postagem post= new Postagem();
 		post.setId(1L);
 		post.setTitulo("{Update}Uma postagem usada para fazer testes");
