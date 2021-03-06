@@ -3,7 +3,6 @@ package com.blogpessoal.Controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,29 +46,21 @@ public class PostagemControllerTest {
 		List<Postagem> postList= List.of(PostagemCreator.criaPostagem());
 		
 		//quando chamar o medodo findAll vai retornar o postagemPage
-				BDDMockito.when(postService.getPostagemRepository().findAll())
+		BDDMockito.when(postService.getPostagemRepository().findAll())
 							.thenReturn(postList);
-		//objetos que vamos comparar 
-		String tituloEsperado= PostagemCreator.criaPostagem().getTitulo();
-		List<Postagem> respostaFindAll= postagemController.findAll().getBody();
+		ResponseEntity<List<Postagem>> respostaFindAll= postagemController.findAll();
 		//realizando os testes 
-		Assertions.assertThat(respostaFindAll)
-								.isNotNull()
-								.isNotEmpty()
-								.hasSize(1);
-		Assertions.assertThat(respostaFindAll.get(0).getTitulo())
-								.isEqualTo(tituloEsperado);
+		ResponseEntityPostagemTest.testeListaPostagem(respostaFindAll, HttpStatus.OK);
 		
 	}
 	
 	@Test
 	@DisplayName("busca por id Sucesso")
 	void findById_Sucessful() {
-		// quando chamar o medodo findAll vai retornar o postagemPage
 		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
 				.thenReturn(Optional.of(PostagemCreator.criaPostagem_Save()));
+		
 		ResponseEntity<Postagem> postFindById = postagemController.findById(321L);
-		// teste no response entity
 		ResponseEntityPostagemTest.testePostagemUnica(postFindById, HttpStatus.OK);
 	}
 	
@@ -84,13 +75,7 @@ public class PostagemControllerTest {
 		//fazendo a requisição no controller 
 		ResponseEntity<List<Postagem>> testFindByTitulo= postagemController.findAllByTituloContaining("titulo");
 		// realizando os testes
-		Assertions.assertThat(testFindByTitulo.getStatusCode()).isEqualTo(HttpStatus.OK);
-		Assertions.assertThat(testFindByTitulo.getBody())
-													.isNotNull()
-													.isNotEmpty()
-													.hasSize(1);
-		Assertions.assertThat(testFindByTitulo.getBody().get(0).getTitulo())
-								.isEqualTo(PostagemCreator.criaPostagem().getTitulo());
+		ResponseEntityPostagemTest.testeListaPostagem(testFindByTitulo, HttpStatus.OK);
 	}
 	@Test
 	@DisplayName("Busca por Id Inexistente")

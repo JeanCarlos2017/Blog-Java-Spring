@@ -1,5 +1,7 @@
 package com.blogpessoal.util;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +22,13 @@ public class ResponseEntityPostagemTest {
 		Assertions.assertThat(post.getBody()).isNull();
 	}
 	
-	
+	public static void testeListaPostagem(ResponseEntity<List<Postagem>> responsePostList, HttpStatus status) {
+		Assertions.assertThat(responsePostList.getStatusCode()).isEqualTo(status);
+		Assertions.assertThat(responsePostList.getBody())
+													.isNotNull()
+													.isNotEmpty()
+													.hasSize(1);
+		Assertions.assertThat(responsePostList.getBody().get(0).getTitulo())
+											.isEqualTo(PostagemCreator.criaPostagem_Save().getTitulo());	
+	}
 }
