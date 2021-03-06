@@ -82,9 +82,16 @@ public class PostagemControllerTest {
 		BDDMockito.when(
 				postService.getPostagemRepository().findAllByTituloContainingIgnoreCase(ArgumentMatchers.anyString()))
 				.thenReturn(postList);
+		//fazendo a requisição no controller 
+		ResponseEntity<List<Postagem>> testFindByTitulo= postagemController.findAllByTituloContaining("titulo");
 		// realizando os testes
-		Assertions.assertThat(postList).isNotNull().isNotEmpty().hasSize(1);
-		Assertions.assertThat(postList.get(0).getTitulo()).isEqualTo(PostagemCreator.criaPostagem().getTitulo());
+		Assertions.assertThat(testFindByTitulo.getStatusCode()).isEqualTo(HttpStatus.OK);
+		Assertions.assertThat(testFindByTitulo.getBody())
+													.isNotNull()
+													.isNotEmpty()
+													.hasSize(1);
+		Assertions.assertThat(testFindByTitulo.getBody().get(0).getTitulo())
+								.isEqualTo(PostagemCreator.criaPostagem().getTitulo());
 	}
 	@Test
 	@DisplayName("Busca por Id Inexistente")
