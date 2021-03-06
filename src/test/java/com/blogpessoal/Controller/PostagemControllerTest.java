@@ -82,5 +82,15 @@ public class PostagemControllerTest {
 		Assertions.assertThat(postList).isNotNull().isNotEmpty().hasSize(1);
 		Assertions.assertThat(postList.get(0).getTitulo()).isEqualTo(PostagemCreator.criaPostagem().getTitulo());
 	}
-
+	@Test
+	@DisplayName("Busca por Id Inexistente")
+	void findByIdInexistente() {
+		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
+		.thenReturn(Optional.empty());
+		Optional<Postagem> postFindById= postService.getPostagemRepository().findById(321L);
+		Assertions.assertThat(postFindById).
+					isEmpty()
+					.isNotNull();
+	}
+	
 }
