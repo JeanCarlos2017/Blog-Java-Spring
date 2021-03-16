@@ -57,27 +57,20 @@ public class PostagemController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Postagem> alteraPostagem(@Valid @PathVariable Long id, @RequestBody Postagem post) {
-		if(cadastroPostagem.getPostagemRepository().existsById(id)) {
-			//id passado é válido
-			post.setId(id); //passo o valor para o post 
-			cadastroPostagem.salvar(post);
-			return ResponseEntity.ok(post);
-		}else {
-			//não encontrou o ID 
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.status(HttpStatus.OK).body(this.cadastroPostagem.alteraPostagem(post, id));
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePostagem(@Valid @PathVariable Long id) {
-		if(cadastroPostagem.getPostagemRepository().existsById(id)) {
-			//id passado é válido
-			cadastroPostagem.excluir(id);
-			return ResponseEntity.noContent().build();
-		}else {
-			//não encontrou o ID 
-			return ResponseEntity.notFound().build();
-		}
+//		if(cadastroPostagem.getPostagemRepository().existsById(id)) {
+//			//id passado é válido
+//			cadastroPostagem.excluir(id);
+//			return ResponseEntity.noContent().build();
+//		}else {
+//			//não encontrou o ID 
+//			return ResponseEntity.notFound().build();
+//		}
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.blogpessoal.Controller;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.blogpessoal.api.controller.PostagemController;
+import com.blogpessoal.domain.exception.EntidadeNaoEncontradaException;
 import com.blogpessoal.domain.model.Postagem;
 import com.blogpessoal.domain.repository.PostagemRepository;
 import com.blogpessoal.domain.service.CadastroPostagemService;
@@ -36,8 +39,7 @@ public class PostagemControllerTest {
 	@BeforeEach
 	void setUp() {
 		//quando chamar o postService.getPostagemRepository() retorna o repositório mockado
-		BDDMockito.when(postService.getPostagemRepository()).thenReturn(postRepository);
-		
+		//BDDMockito.when(postService.getPostagemRepository()).thenReturn(postRepository);
 	}
 	
 	@Test
@@ -47,7 +49,7 @@ public class PostagemControllerTest {
 		List<Postagem> postList= List.of(PostagemCreator.criaPostagem());
 		
 		//quando chamar o medodo findAll vai retornar o postagemPage
-		BDDMockito.when(postService.getPostagemRepository().findAll())
+		BDDMockito.when(postService.findAll())
 							.thenReturn(postList);
 		ResponseEntity<List<Postagem>> respostaFindAll= postagemController.findAll();
 		//realizando os testes 
@@ -58,7 +60,7 @@ public class PostagemControllerTest {
 	@Test
 	@DisplayName("busca por id Sucesso")
 	void findById_Successful() {
-		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
+		BDDMockito.when(postService.findById(ArgumentMatchers.anyLong()))
 				.thenReturn(Optional.of(PostagemCreator.criaPostagem_Save()));
 		
 		ResponseEntity<Postagem> postFindById = postagemController.findById(321L);
@@ -71,7 +73,7 @@ public class PostagemControllerTest {
 		// criando uma lista de postagem com um elemento
 		List<Postagem> postList = List.of(PostagemCreator.criaPostagem());
 		BDDMockito.when(
-				postService.getPostagemRepository().findAllByTituloContainingIgnoreCase(ArgumentMatchers.anyString()))
+				postService.findAllByTituloContainingIgnoreCase(ArgumentMatchers.anyString()))
 				.thenReturn(postList);
 		//fazendo a requisição no controller 
 		ResponseEntity<List<Postagem>> testFindByTitulo= postagemController.findAllByTituloContaining("titulo");
@@ -81,7 +83,7 @@ public class PostagemControllerTest {
 	@Test
 	@DisplayName("Busca por Id Inexistente")
 	void findByIdInexistente() {
-		BDDMockito.when(postService.getPostagemRepository().findById(ArgumentMatchers.anyLong()))
+		BDDMockito.when(postService.findById(ArgumentMatchers.anyLong()))
 		.thenReturn(Optional.empty());
 		//fazendo a requisição no controller 
 		ResponseEntity<Postagem> postFindById= postagemController.findById(3021L);
@@ -103,7 +105,7 @@ public class PostagemControllerTest {
 	@Test 
 	@DisplayName("Delete Post IdExistente")
 	void deletePost_Success() {
-		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(true);
+		//BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(true);
 		BDDMockito.doNothing().when(postService).excluir(ArgumentMatchers.any());
 								
 		//fazendo a requisição no controller 
@@ -116,7 +118,7 @@ public class PostagemControllerTest {
 	@Test 
 	@DisplayName("Delete Post Id Inexistente")
 	void deletePost_failure() {
-		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(false);
+		//BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(false);
 		BDDMockito.doNothing().when(postService).excluir(ArgumentMatchers.any());
 								
 		//fazendo a requisição no controller 
@@ -129,8 +131,8 @@ public class PostagemControllerTest {
 	@Test
 	@DisplayName("Update Post Id Existente")
 	void putPost_Success() {
-		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(true);
-		BDDMockito.when(postService.salvar(ArgumentMatchers.any())).thenReturn(PostagemCreator.criaPostagem_Update());
+		BDDMockito.when(postService.alteraPostagem(ArgumentMatchers.any(), ArgumentMatchers.anyLong()))
+													.thenReturn(PostagemCreator.criaPostagem_Update());
 
 		// fazendo a requisição no controller
 		ResponseEntity<Postagem> postUpdate = postagemController
@@ -141,12 +143,16 @@ public class PostagemControllerTest {
 	@Test
 	@DisplayName("Update Post Id Inexistente")
 	void putPost_Failure() {
-		BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(false);
-		BDDMockito.when(postService.salvar(ArgumentMatchers.any())).thenReturn(PostagemCreator.criaPostagem_Update());
+		BDDMockito.when(postService.alteraPostagem(ArgumentMatchers.any(), ArgumentMatchers.anyLong()))
+		.thenThrow(new EntidadeNaoEncontradaException
+				("Não existe uma entidade com o id passado! Por favor verifique a requisição e tente novamente"));
 
 		// fazendo a requisição no controller
-		ResponseEntity<Postagem> postUpdate = postagemController.alteraPostagem(2567L,
-				PostagemCreator.criaPostagem_Update());
-		ResponseEntityPostagemTest.testePostagemUnicaVazia(postUpdate, HttpStatus.NOT_FOUND);
+		assertThrows(
+				EntidadeNaoEncontradaException.class, 
+				()->{
+					postagemController.alteraPostagem(2567L,PostagemCreator.criaPostagem_Update());
+				});
+		
 	}
 }

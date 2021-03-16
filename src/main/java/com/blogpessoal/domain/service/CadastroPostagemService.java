@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.blogpessoal.domain.exception.EntidadeNaoEncontradaException;
 import com.blogpessoal.domain.model.Postagem;
 import com.blogpessoal.domain.repository.PostagemRepository;
 
@@ -40,4 +41,13 @@ public class CadastroPostagemService {
 		return this.postagemRepository.findAllByTituloContainingIgnoreCase(titulo);
 	}
 	
+	public Postagem alteraPostagem(Postagem postagem, long idPostagem) {
+		if(this.postagemRepository.existsById(idPostagem)) {
+			postagem.setId(idPostagem);
+			return this.postagemRepository.save(postagem);
+		}else {
+			throw new EntidadeNaoEncontradaException
+					("Não existe uma entidade com o id passado! Por favor verifique a requisição e tente novamente");
+		}
+	}
 }
