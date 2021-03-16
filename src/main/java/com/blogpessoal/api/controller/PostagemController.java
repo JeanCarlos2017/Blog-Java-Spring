@@ -62,15 +62,8 @@ public class PostagemController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePostagem(@Valid @PathVariable Long id) {
-//		if(cadastroPostagem.getPostagemRepository().existsById(id)) {
-//			//id passado é válido
-//			cadastroPostagem.excluir(id);
-//			return ResponseEntity.noContent().build();
-//		}else {
-//			//não encontrou o ID 
-//			return ResponseEntity.notFound().build();
-//		}
-		return null;
+		this.cadastroPostagem.deletePostagem(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 }

@@ -3,8 +3,6 @@ package com.blogpessoal.domain.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +20,6 @@ public class CadastroPostagemService {
 		//duas postagem pode ter o mesmo titulo?
 		//Postagem post= postagemRepository.findByTitulo(postagem.getTitulo());
 		return postagemRepository.save(postagem);
-	}
-
-	public void excluir(@Valid Long id) {
-		postagemRepository.deleteById(id);		
 	}
 
 	public List<Postagem> findAll(){
@@ -48,6 +42,16 @@ public class CadastroPostagemService {
 		}else {
 			throw new EntidadeNaoEncontradaException
 					("Não existe uma entidade com o id passado! Por favor verifique a requisição e tente novamente");
+		}
+	}
+	
+	public void deletePostagem(long idPost) {
+		if(this.postagemRepository.existsById(idPost)) {
+			this.postagemRepository.deleteById(idPost);
+		}else {
+			throw new EntidadeNaoEncontradaException
+					("Não existe uma entidade com o id passado, portanto não foi feita a remoção! "
+							+ "Por favor verifique a requisição e tente novamente");
 		}
 	}
 }

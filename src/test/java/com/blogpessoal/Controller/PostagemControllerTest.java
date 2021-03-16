@@ -1,12 +1,12 @@
 package com.blogpessoal.Controller;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,12 +35,6 @@ public class PostagemControllerTest {
 	private CadastroPostagemService postService;
 	@Mock 
 	private PostagemRepository postRepository;
-	
-	@BeforeEach
-	void setUp() {
-		//quando chamar o postService.getPostagemRepository() retorna o repositório mockado
-		//BDDMockito.when(postService.getPostagemRepository()).thenReturn(postRepository);
-	}
 	
 	@Test
 	@DisplayName("Retorna lista de postagens dentro po postList")
@@ -94,10 +88,9 @@ public class PostagemControllerTest {
 	@Test 
 	@DisplayName("Save Post")
 	void savePost_Success() {
-		BDDMockito.when(postService.salvar(ArgumentMatchers.any()))
-									.thenReturn(PostagemCreator.criaPostagem_Save());
+		BDDMockito.when(postService.salvar(ArgumentMatchers.any())).thenReturn(PostagemCreator.criaPostagem_Save());
 		//fazendo a requisição no controller 
-		ResponseEntity<Postagem> postSave= postagemController.adicionarPostagem(PostagemCreator.criaPostagem());
+		ResponseEntity<Postagem> postSave = postagemController.adicionarPostagem(PostagemCreator.criaPostagem());
 		//realizando os testes 
 		ResponseEntityPostagemTest.testePostagemUnica(postSave, HttpStatus.CREATED);
 	}
@@ -105,9 +98,6 @@ public class PostagemControllerTest {
 	@Test 
 	@DisplayName("Delete Post IdExistente")
 	void deletePost_Success() {
-		//BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(true);
-		BDDMockito.doNothing().when(postService).excluir(ArgumentMatchers.any());
-								
 		//fazendo a requisição no controller 
 		ResponseEntity<Void> postDelete= postagemController
 								.deletePostagem(PostagemCreator.criaPostagem_Save().getId());
@@ -118,14 +108,15 @@ public class PostagemControllerTest {
 	@Test 
 	@DisplayName("Delete Post Id Inexistente")
 	void deletePost_failure() {
-		//BDDMockito.when(postService.getPostagemRepository().existsById(ArgumentMatchers.anyLong())).thenReturn(false);
-		BDDMockito.doNothing().when(postService).excluir(ArgumentMatchers.any());
+		doThrow(new EntidadeNaoEncontradaException("entidade não encontrada")).
+					when(postService).deletePostagem(ArgumentMatchers.anyLong());
 								
-		//fazendo a requisição no controller 
-		ResponseEntity<Void> postDelete= postagemController
-								.deletePostagem(PostagemCreator.criaPostagem_Save().getId());
 		//realizando os testes 
-		Assertions.assertThat(postDelete.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThrows(
+				EntidadeNaoEncontradaException.class, 
+				()->{
+					postagemController.deletePostagem(2567L);
+		});
 	}
 	
 	@Test
@@ -152,7 +143,7 @@ public class PostagemControllerTest {
 				EntidadeNaoEncontradaException.class, 
 				()->{
 					postagemController.alteraPostagem(2567L,PostagemCreator.criaPostagem_Update());
-				});
+		});
 		
 	}
 }
