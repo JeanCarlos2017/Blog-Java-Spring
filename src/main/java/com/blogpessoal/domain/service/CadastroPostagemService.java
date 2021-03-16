@@ -20,9 +20,9 @@ public class CadastroPostagemService {
 	private boolean verificaCamposPostagem(Postagem post) {
 		//faço a verificação de titulo e texto
 		if(post.getTitulo() == null || post.getTitulo().isEmpty())
-			throw new CadastroException("título não pode ser nulo/vazio!");
-		if(post.getTexto().isEmpty() || post.getTexto() == null) 
-			throw new CadastroException("texto não pode ser nulo/vazio!");
+			throw new CadastroException("título não pode ser nulo e/ou vazio!");
+		if(post.getTexto() == null || post.getTexto().isEmpty()) 
+			throw new CadastroException("texto não pode ser nulo e/ou vazio!");
 		
 		return true;
 	}
