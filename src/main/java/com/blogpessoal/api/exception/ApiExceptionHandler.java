@@ -13,9 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.blogpessoal.domain.exception.CadastroException;
 import com.blogpessoal.domain.exception.EntidadeNaoEncontradaException;
 
-
-
-
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(CadastroException.class)

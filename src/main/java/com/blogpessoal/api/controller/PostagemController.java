@@ -51,7 +51,7 @@ public class PostagemController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Postagem> adicionarPostagem(@Valid @RequestBody Postagem postagem) {
+	public ResponseEntity<Postagem> adicionarPostagem(@RequestBody Postagem postagem) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(cadastroPostagem.salvar(postagem));
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.blogpessoal.domain.exception.CadastroException;
 import com.blogpessoal.domain.exception.EntidadeNaoEncontradaException;
 import com.blogpessoal.domain.model.Postagem;
 import com.blogpessoal.domain.repository.PostagemRepository;
@@ -15,11 +16,21 @@ import com.blogpessoal.domain.repository.PostagemRepository;
 public class CadastroPostagemService {
 	@Autowired
 	private PostagemRepository postagemRepository;
-
+	
+	private boolean verificaCamposPostagem(Postagem post) {
+		//faço a verificação de titulo e texto
+		if(post.getTitulo() == null || post.getTitulo().isEmpty())
+			throw new CadastroException("título não pode ser nulo/vazio!");
+		if(post.getTexto().isEmpty() || post.getTexto() == null) 
+			throw new CadastroException("texto não pode ser nulo/vazio!");
+		
+		return true;
+	}
 	public Postagem salvar(Postagem postagem) {
-		//duas postagem pode ter o mesmo titulo?
-		//Postagem post= postagemRepository.findByTitulo(postagem.getTitulo());
-		return postagemRepository.save(postagem);
+		if(this.verificaCamposPostagem(postagem)) {
+			return postagemRepository.save(postagem);
+		}
+		return null;
 	}
 
 	public List<Postagem> findAll(){
