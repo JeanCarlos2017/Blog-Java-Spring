@@ -16,13 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blogpessoal.domain.model.Postagem;
 import com.blogpessoal.domain.service.CadastroPostagemService;
-
-
 
 @RestController
 @RequestMapping("/postagem")
@@ -35,12 +32,12 @@ public class PostagemController {
 	
 	@GetMapping("")
 	public ResponseEntity<List<Postagem>> findAll() {
-		return ResponseEntity.ok(cadastroPostagem.getPostagemRepository().findAll());
+		return ResponseEntity.ok(cadastroPostagem.findAll());
 	}
 	
 	@GetMapping("/{postId}")
 	public ResponseEntity<Postagem> findById(@PathVariable Long postId) {
-		Optional<Postagem> post = cadastroPostagem.getPostagemRepository().findById(postId);
+		Optional<Postagem> post = cadastroPostagem.findById(postId);
 		if (post.isPresent()) {
 			return ResponseEntity.ok(post.get());
 		}else {
@@ -50,13 +47,12 @@ public class PostagemController {
 	
 	@GetMapping("/titulo/{titulo}")
 	public ResponseEntity<List<Postagem>> findAllByTituloContaining(@PathVariable String titulo) {
-		return ResponseEntity.ok(cadastroPostagem.getPostagemRepository().findAllByTituloContainingIgnoreCase(titulo));
+		return ResponseEntity.ok(cadastroPostagem.findAllByTituloContainingIgnoreCase(titulo));
 	}
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public Postagem adicionarPostagem(@Valid @RequestBody Postagem postagem) {
-		return cadastroPostagem.salvar(postagem);
+	public ResponseEntity<Postagem> adicionarPostagem(@Valid @RequestBody Postagem postagem) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(cadastroPostagem.salvar(postagem));
 	}
 	
 	@PutMapping("/{id}")

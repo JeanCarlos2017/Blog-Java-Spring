@@ -1,5 +1,8 @@
 package com.blogpessoal.domain.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +27,17 @@ public class CadastroPostagemService {
 		postagemRepository.deleteById(id);		
 	}
 
-	public PostagemRepository getPostagemRepository() {
-		return postagemRepository;
+	public List<Postagem> findAll(){
+		return this.postagemRepository.findAll();
 	}
 	
+	public Optional<Postagem> findById(long postId) {
+		return this.postagemRepository.findById(postId);
+		
+	}
+	
+	public List<Postagem> findAllByTituloContainingIgnoreCase(String titulo){
+		return this.postagemRepository.findAllByTituloContainingIgnoreCase(titulo);
+	}
 	
 }

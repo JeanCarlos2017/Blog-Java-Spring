@@ -198,3 +198,4 @@ Ideias do Projeto.txt
 ánotações.txt
 
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows
+src/test/java/com/blogpessoal/endpoint/PostagemControllerTestEndpoint.java
