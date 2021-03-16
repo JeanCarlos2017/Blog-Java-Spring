@@ -13,6 +13,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -39,6 +40,10 @@ public class Postagem {
 	@ManyToOne
 	@JsonIgnoreProperties("postagemList")
 	private Tema tema;	
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagensUsuario")
+	UsuarioEntidade usuario;
 	
 	@Override
 	public String toString() {
@@ -83,6 +88,14 @@ public class Postagem {
 
 	public void setTema(Tema tema) {
 		this.tema = tema;
+	}
+
+	public UsuarioEntidade getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioEntidade usuario) {
+		this.usuario = usuario;
 	}
 	
 	
