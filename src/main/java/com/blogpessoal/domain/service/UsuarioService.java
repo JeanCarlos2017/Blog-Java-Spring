@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blogpessoal.domain.exception.EntidadeNaoEncontradaException;
 import com.blogpessoal.domain.model.UsuarioEntidade;
 import com.blogpessoal.domain.model.UsuarioLogin;
 import com.blogpessoal.domain.repository.UsuarioRepository;
@@ -73,10 +74,10 @@ public class UsuarioService {
 				userParametro.get().setNome(usuario.get().getNome());
 				return userParametro;				
 			}else {
-				return Optional.empty();
+				throw new EntidadeNaoEncontradaException("Senha incorreta");
 			}
 		}else {
-			return Optional.empty();
+			throw new EntidadeNaoEncontradaException("Nome de usuário não encontrado");
 		}
 	}
 
