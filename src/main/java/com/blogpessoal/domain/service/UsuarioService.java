@@ -69,6 +69,8 @@ public class UsuarioService {
 				userParametro.get().setCodigo_usuario(usuario.get().getCodigo_usuario());
 				userParametro.get().setUrl_foto(usuario.get().getUrl_foto());
 				userParametro.get().setEmail(usuario.get().getEmail());
+				userParametro.get().setTipo(usuario.get().getTipo());
+				userParametro.get().setNome(usuario.get().getNome());
 				return userParametro;				
 			}else {
 				return null;
