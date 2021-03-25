@@ -73,10 +73,10 @@ public class UsuarioService {
 				userParametro.get().setNome(usuario.get().getNome());
 				return userParametro;				
 			}else {
-				return null;
+				return Optional.empty();
 			}
 		}else {
-			return null;
+			return Optional.empty();
 		}
 	}
 
