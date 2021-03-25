@@ -33,7 +33,9 @@ public class UsuarioEntidade {
 	
 	private long codigo_usuario;
 	
-	@OneToMany(mappedBy= "usuario", cascade= CascadeType.ALL)
+	private String tipo;
+	
+	@OneToMany(mappedBy= "usuario", cascade= CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagensUsuario= new ArrayList<Postagem>();
 
@@ -101,6 +103,23 @@ public class UsuarioEntidade {
 	public void setUrl_foto(String url_foto) {
 		this.url_foto = url_foto;
 	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public List<Postagem> getPostagensUsuario() {
+		return postagensUsuario;
+	}
+
+	public void setPostagensUsuario(List<Postagem> postagensUsuario) {
+		this.postagensUsuario = postagensUsuario;
+	}
+	
 	
 	
 }
