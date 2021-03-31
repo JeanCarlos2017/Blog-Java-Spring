@@ -26,11 +26,9 @@ public class Postagem {
 	
 	//@Getter @Setter 
 	@NotNull (message = "tem que existir um título")
-	@Size(min= 5, max= 100)
 	private String titulo;
 	
 	//@Getter @Setter
-	@NotNull @Size(min= 10, max= 500)
 	private String texto; 
 	
 	//@Getter @Setter 
