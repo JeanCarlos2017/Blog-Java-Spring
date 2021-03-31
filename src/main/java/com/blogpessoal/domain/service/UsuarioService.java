@@ -72,6 +72,7 @@ public class UsuarioService {
 				userParametro.get().setEmail(usuario.get().getEmail());
 				userParametro.get().setTipo(usuario.get().getTipo());
 				userParametro.get().setNome(usuario.get().getNome());
+				userParametro.get().setId(usuario.get().getId_usuario());
 				return userParametro;				
 			}else {
 				throw new EntidadeNaoEncontradaException("Senha incorreta");
