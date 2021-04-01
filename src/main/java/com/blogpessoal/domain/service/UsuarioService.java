@@ -89,6 +89,12 @@ public class UsuarioService {
 	public UsuarioRepository getUsuarioRepository() {
 		return usuarioRepository;
 	}
+
+	public UsuarioEntidade getById(long id) {
+		Optional<UsuarioEntidade> user= this.usuarioRepository.findById(id);
+		if(user.isPresent()) return user.get();
+		else throw new EntidadeNaoEncontradaException("id_usuário de usuário não encontrado");
+	}
 	
 	
 }
