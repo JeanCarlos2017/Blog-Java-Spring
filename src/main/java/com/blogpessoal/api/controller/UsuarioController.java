@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,11 @@ public class UsuarioController {
 									.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
+	@PutMapping("/atualizar")
+	public ResponseEntity<UsuarioEntidade> putUsuario(@Valid @RequestBody UsuarioEntidade usuario){
+		UsuarioEntidade user = usuarioService.alteraUsuario(usuario);
+		return this.valida(user, HttpStatus.ACCEPTED);
+	}
 	
 	private ResponseEntity<UsuarioEntidade> valida(UsuarioEntidade user, HttpStatus status){
 		if (user == null) return ResponseEntity.badRequest().build();

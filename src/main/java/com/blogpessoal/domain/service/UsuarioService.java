@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blogpessoal.domain.exception.CadastroException;
 import com.blogpessoal.domain.exception.EntidadeNaoEncontradaException;
 import com.blogpessoal.domain.model.UsuarioEntidade;
 import com.blogpessoal.domain.model.UsuarioLogin;
@@ -96,5 +97,24 @@ public class UsuarioService {
 		else throw new EntidadeNaoEncontradaException("id_usuário de usuário não encontrado");
 	}
 	
-	
+	public UsuarioEntidade alteraUsuario(UsuarioEntidade user) {
+		Optional<UsuarioEntidade> encontrou= usuarioRepository.findByNome(user.getNome());
+		if(encontrou.isPresent() && encontrou.get().getId_usuario() != user.getId_usuario()) {
+			//está tentando mudar o nome para um usuário que já existe 
+			throw new CadastroException("nome de usuário já existente, por favor tente outro!");
+		}
+		
+		if(!this.validaEmail(user.getEmail())) {
+			throw new CadastroException("e-mail inválido, por favor verifique");
+		}
+		//passou nas verificações então começo o processo para salvar o usuário 
+		//criptografa a senha do usuário 
+		BCryptPasswordEncoder encoder= new BCryptPasswordEncoder();
+		String senhaEncoder= encoder.encode(user.getSenha());
+		user.setSenha(senhaEncoder);
+		//gera um código para o usuário de acordo com o nome escolhido 
+		user.setCodigo_usuario();
+		//por fim salva o usuário
+		return this.usuarioRepository.save(user);
+	}
 }
