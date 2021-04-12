@@ -1,5 +1,6 @@
 HELP.md
-target/
+target/*
+!target/blog-pessoal-0.0.1-SNAPSHOT.jar
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -146,7 +147,7 @@ local.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
+
 *.war
 *.nar
 *.ear
