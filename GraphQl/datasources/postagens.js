@@ -24,6 +24,12 @@ class PostagemAPI extends RESTDataSource{
         data.favorite = !data.favorite;
         return data;
     }
+
+    async addPostagem(postagem){
+        const post= JSON.parse(JSON.stringify(postagem));
+        const data= await this.post('/', post);
+        return data;
+    }
 }
 
 module.exports = PostagemAPI;

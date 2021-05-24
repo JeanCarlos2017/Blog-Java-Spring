@@ -13,8 +13,19 @@ type Postagem{
     temas: Tema
     favorite: Boolean
 }
+
+input PostagemInput{
+    titulo: String
+    texto: String
+    tema: TemaInput    
+}
+
+input TemaInput{
+    id: ID
+}
 type Mutation{
     toggleFavoritePostagem(id: ID): Postagem
+    addPostagem(postagem: PostagemInput): Postagem
 }
 type Query{
     postagens(
