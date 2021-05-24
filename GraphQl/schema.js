@@ -11,6 +11,10 @@ type Postagem{
     titulo: String
     texto: String
     temas: Tema
+    favorite: Boolean
+}
+type Mutation{
+    toggleFavoritePostagem(id: ID): Postagem
 }
 type Query{
     postagens(

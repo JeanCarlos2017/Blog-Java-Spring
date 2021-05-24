@@ -15,8 +15,13 @@ class PostagemAPI extends RESTDataSource{
     }
 
     async getPostagemById(id){
-        console.log(id)
         const data = await this.get(`/${id}`, token)
+        return data;
+    }
+
+    async toggleFavoritePostagem(id){
+        const data = await this.get(`/${id}`, token);
+        data.favorite = !data.favorite;
         return data;
     }
 }
