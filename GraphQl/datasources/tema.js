@@ -8,9 +8,10 @@ class TemaAPI extends RESTDataSource{
         this.baseURL= 'http://localhost:8080/tema';
     }
 
-     async getTemas(){
+     async getTemas(args){
         const data = await this.get('/');
-        return data;
+        const dataFilter= _.filter(data, args);
+        return dataFilter;
     }
 
     async getTemaById(id){

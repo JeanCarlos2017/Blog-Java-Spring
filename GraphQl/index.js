@@ -1,7 +1,7 @@
 const {ApolloServer} = require("apollo-server");
 const PostagemAPI = require('./datasources/postagens'); 
 const TemaAPI = require('./datasources/tema')
-const token = require('./datasources/token');
+const tokenAuthorization = require('./datasources/token');
 
 const postagemAPI = new PostagemAPI();
 
@@ -10,13 +10,15 @@ const resolvers= require('./resolvers');
 
 const dataSources = () => ({
     postagemAPI: new PostagemAPI(),
-    temaAPI: new TemaAPI()
+    temaAPI: new TemaAPI(),
+   
 });
 
 const server= new ApolloServer({
     typeDefs,
     resolvers, 
-    dataSources
+    dataSources,
+   
 })
 
 server
