@@ -9,8 +9,12 @@ module.exports = {
             return dataSources.postagemAPI. getPostagemById(id);
         },
         
-        tema(){
+        temas: (parent, args, {dataSources}, info) =>{
+            return dataSources.temaAPI.getAllPostagem(args);
+        },
 
-        }
+        temaById: (parent, { id }, {dataSources}, info) =>{
+            return dataSources.temaAPI. getTemaById(id);
+        },
     },
 };

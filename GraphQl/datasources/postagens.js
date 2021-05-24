@@ -1,25 +1,22 @@
-const {DataSource} = require('apollo-datasource')
+const {RESTDataSource} = require('apollo-datasource-rest')
 const _ = require('lodash');
+const token = require('./token')
 
-class PostagemAPI extends DataSource{
+class PostagemAPI extends RESTDataSource{
     constructor(config){
         super();
-        this.baseURL= `http://localhost:8080/postagem`
+        this.baseURL= 'http://localhost:8080/postagem';
     }
 
-    initialize(config){
-        
-    }
-
-
-    getAllPostagem(){
-        const data = this.get(this.baseURL);
+     async getAllPostagem(){
+        const data = await this.get('/');
         return data;
     }
 
-    getPostagemById(id){
+    async getPostagemById(id){
         console.log(id)
-        return null;
+        const data = await this.get(`/${id}`, token)
+        return data;
     }
 }
 

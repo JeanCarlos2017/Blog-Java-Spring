@@ -1,5 +1,6 @@
 const {ApolloServer} = require("apollo-server");
 const PostagemAPI = require('./datasources/postagens'); 
+const token = require('./datasources/token');
 
 const postagemAPI = new PostagemAPI();
 
