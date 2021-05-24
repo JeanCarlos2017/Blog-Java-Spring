@@ -10,7 +10,7 @@ module.exports = {
         },
         
         temas: (parent, args, {dataSources}, info) =>{
-            return dataSources.temaAPI.getAllPostagem(args);
+            return dataSources.temaAPI.getTemas(args);
         },
 
         temaById: (parent, { id }, {dataSources}, info) =>{
