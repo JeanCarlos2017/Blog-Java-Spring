@@ -4,6 +4,7 @@ module.exports = gql `
 type Tema{
     id: ID
     descricao: String
+    postagens: [Postagem]
 }
 type Postagem{
     id: ID

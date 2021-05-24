@@ -23,5 +23,10 @@ module.exports = {
            
            return postagem.tema;
         } 
+    },
+    Tema: {
+        postagens(tema, args, {dataSources}){
+            return tema.postagemList;
+        }
     }
 };
