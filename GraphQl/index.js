@@ -8,7 +8,8 @@ const resolvers= require('./resolvers');
 
 const dataSources = () => ({
     postagemAPI: new PostagemAPI()
-})
+});
+
 const server= new ApolloServer({
     typeDefs,
     resolvers, 

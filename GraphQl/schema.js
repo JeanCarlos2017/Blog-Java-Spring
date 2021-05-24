@@ -12,7 +12,7 @@ type Postagem{
 }
 type Query{
     postagens: [Postagem]
-    postagemById: Postagem
+    postagemById(id: ID): Postagem
     tema: Tema
 }
 `
