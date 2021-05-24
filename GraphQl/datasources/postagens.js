@@ -1,4 +1,5 @@
 const {DataSource} = require('apollo-datasource')
+const _ = require('lodash');
 
 class PostagemAPI extends DataSource{
     constructor(config){
@@ -6,13 +7,20 @@ class PostagemAPI extends DataSource{
         this.baseURL= `http://localhost:8080/postagem`
     }
 
+    initialize(config){
+        
+    }
 
 
-    async getAllPostagem(){
-        const data = await this.get(this.baseURL);
+    getAllPostagem(){
+        const data = this.get(this.baseURL);
         return data;
     }
 
+    getPostagemById(id){
+        console.log(id)
+        return null;
+    }
 }
 
 module.exports = PostagemAPI;
