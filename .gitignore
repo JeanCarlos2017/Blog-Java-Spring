@@ -200,3 +200,6 @@ Ideias do Projeto.txt
 
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows
 src/test/java/com/blogpessoal/endpoint/PostagemControllerTestEndpoint.java
+
+#GraphQL 
+GraphQL/node_modules/*
