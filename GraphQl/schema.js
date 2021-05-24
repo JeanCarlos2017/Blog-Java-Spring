@@ -11,7 +11,10 @@ type Postagem{
     texto: String
 }
 type Query{
-    postagens: [Postagem]
+    postagens(
+        titulo: String
+        texto: String
+    ): [Postagem]
     postagemById(id: ID): Postagem
     temas(
       id: ID

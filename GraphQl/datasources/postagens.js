@@ -8,9 +8,10 @@ class PostagemAPI extends RESTDataSource{
         this.baseURL= 'http://localhost:8080/postagem';
     }
 
-     async getAllPostagem(){
+     async getAllPostagem(args){
         const data = await this.get('/');
-        return data;
+        const dataFilter= _.filter(data, args);
+        return dataFilter;
     }
 
     async getPostagemById(id){
