@@ -9,6 +9,7 @@ type Postagem{
     id: ID
     titulo: String
     texto: String
+    temas: Tema
 }
 type Query{
     postagens(

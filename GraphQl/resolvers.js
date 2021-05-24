@@ -1,3 +1,4 @@
+const _ = require('lodash');
 module.exports = {
     Query: {
         
@@ -17,4 +18,10 @@ module.exports = {
             return dataSources.temaAPI. getTemaById(id);
         },
     },
+    Postagem: {
+      temas(postagem, args, {dataSources}){
+           
+           return postagem.tema;
+        } 
+    }
 };
