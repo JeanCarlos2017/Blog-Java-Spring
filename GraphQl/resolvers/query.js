@@ -1,3 +1,4 @@
+const { ApolloError } = require('apollo-server')
 module.exports = {
         
     postagens: (parent, args, {dataSources}, info) =>{
@@ -16,7 +17,7 @@ module.exports = {
         try{
             return dataSources.temaAPI.getTemaById(id);
         }catch(error){
-            throw error;
+           return new ApolloError("Unable to get this tema", "please check the id", {token: "UNIQUE"})
         }
     },
 };
