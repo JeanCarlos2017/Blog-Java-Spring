@@ -1,4 +1,4 @@
-const {ApolloServer} = require("apollo-server");
+const {ApolloServer, ApolloError} = require("apollo-server");
 const PostagemAPI = require('./datasources/postagens'); 
 const TemaAPI = require('./datasources/tema')
 const tokenAuthorization = require('./datasources/token');
@@ -18,6 +18,12 @@ const server= new ApolloServer({
     typeDefs,
     resolvers, 
     dataSources,
+    debug: false, 
+    formatError: (err) =>{
+        if(err.extensions.code == 'INTERNAL_SERVER_ERROR'){
+            return new ApolloError("We are having some trouble", "ERROR", {token: "uniquetoken"})
+        }
+    }
    
 })
 
