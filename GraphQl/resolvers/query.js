@@ -13,6 +13,10 @@ module.exports = {
     },
 
     temaById: (parent, { id }, {dataSources}, info) =>{
-        return dataSources.temaAPI. getTemaById(id);
+        try{
+            return dataSources.temaAPI.getTemaById(id);
+        }catch(error){
+            throw error;
+        }
     },
 };
